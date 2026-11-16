@@ -1,0 +1,13 @@
+{
+  // Static asset Worker. Authenticate with `wrangler login` (the account that
+  // will own the zone), then deploy with `npx wrangler deploy`.
+  // Custom domain routes are intentionally omitted: madebybots.com is not on
+  // this config until that zone is in the same Cloudflare account.
+  "name": "madebybots",
+  "compatibility_date": "2026-11-16",
+  "assets": {
+    "directory": "./",
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash"
+  }
+}

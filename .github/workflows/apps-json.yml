@@ -1,0 +1,16 @@
+name: Check apps.json
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  schema:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Validate apps.json against apps.schema.json
+        run: npx --yes ajv-cli@5 validate --spec=draft2020 --validate-formats=false -s apps.schema.json -d apps.json

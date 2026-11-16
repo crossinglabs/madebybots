@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "madebybots apps.json",
+  "type": "object",
+  "required": ["site", "apps"],
+  "properties": {
+    "site": {
+      "type": "object",
+      "properties": {
+        "owner": { "type": "string" },
+        "signature": { "type": "string" },
+        "location": { "type": "string" },
+        "contactUrl": { "type": "string", "description": "Booking or mailto link. Empty = Contact nav hidden." },
+        "whosjoseUrl": { "type": "string" },
+        "crossingLabsUrl": { "type": "string" },
+        "githubUrl": { "type": "string" },
+        "xUrl": { "type": "string" }
+      }
+    },
+    "apps": {
+      "type": "array",
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "required": ["id", "ref", "name", "status"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9-]+$", "description": "URL slug: #/apps/<id>" },
+          "ref": { "type": "string", "pattern": "^U[0-9]+$", "description": "Reference designator. U1 is reserved for the core." },
+          "name": { "type": "string" },
+          "status": { "enum": ["live", "building", "placeholder"] },
+          "version": { "type": "string", "description": "Only if real, e.g. v1.2. Empty = omitted." },
+          "primaryTech": { "type": "string" },
+          "platform": { "type": "string" },
+          "tagline": { "type": "string", "maxLength": 70 },
+          "summary": { "type": "string" },
+          "function": { "type": "array", "items": { "type": "string" } },
+          "approach": { "type": "string" },
+          "stack": { "type": "array", "items": { "type": "string" } },
+          "url": { "type": "string", "format": "uri" },
+          "links": { "type": "object", "properties": { "github": { "type": "string" }, "demo": { "type": "string" }, "video": { "type": "string" } } },
+          "screenshots": { "type": "array", "maxItems": 3, "items": { "type": "object", "required": ["src", "alt", "width", "height"], "properties": { "src": { "type": "string" }, "alt": { "type": "string" }, "caption": { "type": "string" }, "width": { "type": "integer" }, "height": { "type": "integer" } } } }
+        }
+      }
+    }
+  }
+}

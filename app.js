@@ -74,29 +74,11 @@ function pins(g, x, y, w, h, step = 20, len = 10, sides = 'tblr') {
 
 /* ---------- render ---------- */
 function drawDecor() {
-  // registration crosshairs
-  for (const [cx, cy] of [[24, 24], [1576, 24], [24, 976], [1576, 976]]) {
-    el('path', { d: `M${cx - 10} ${cy}H${cx + 10}M${cx} ${cy - 10}V${cy + 10}`, class: 'grid-cross' }, decor);
-    el('circle', { cx, cy, r: 5, fill: 'none', class: 'grid-cross' }, decor);
-  }
-  // core package
   const core = el('g', { class: 'core-pkg' }, decor);
   pins(core, CORE.x, CORE.y, CORE.w, CORE.h, 20, 12);
   el('path', { d: chipPath(CORE.x, CORE.y, CORE.w, CORE.h, 22), class: 'core-body' }, core);
   el('rect', { x: CORE.x + 16, y: CORE.y + 16, width: CORE.w - 32, height: CORE.h - 32, class: 'core-inner' }, core);
-  el('circle', { cx: CORE.x + 34, cy: CORE.y + 34, r: 4, fill: 'none', class: 'grid-cross' }, core);
-  // short copper stubs off the top/bottom pins (power/ground feel)
-  const stubs = [[720, 'up', 90], [760, 'up', 140], [840, 'up', 110], [880, 'up', 70], [700, 'down', 80], [780, 'down', 130], [820, 'down', 100], [900, 'down', 150]];
-  for (const [x, dir, len] of stubs) {
-    const y0 = dir === 'up' ? CORE.y - 12 : CORE.y + CORE.h + 12;
-    const y1 = dir === 'up' ? y0 - len : y0 + len;
-    const jog = (x % 40 === 0 ? 1 : -1) * 22;
-    const yMid = dir === 'up' ? y0 - len * 0.55 : y0 + len * 0.55;
-    const yJog = dir === 'up' ? yMid - Math.abs(jog) : yMid + Math.abs(jog);
-    el('path', { d: `M${x} ${y0}V${yMid}L${x + jog} ${yJog}V${y1}`, class: 'trace copper' }, decor);
-    el('circle', { cx: x + jog, cy: y1, r: 4, class: 'via' }, decor);
-  }
-  // dimension line under the core
+  el('circle', { cx: CORE.x + 34, cy: CORE.y + 34, r: 3.5, class: 'pin1' }, core);
   const dy = CORE.y + CORE.h + 190;
   el('path', { d: `M${CORE.x} ${dy - 8}V${dy + 8}M${CORE.x + CORE.w} ${dy - 8}V${dy + 8}M${CORE.x} ${dy}H${CORE.x + CORE.w}`, class: 'dim-line' }, decor);
   const t = el('text', { x: CORE.x + CORE.w / 2, y: dy - 10, 'text-anchor': 'middle', class: 'dim-text' }, decor);
@@ -107,17 +89,10 @@ function drawNets(placed) {
   for (const p of placed) {
     const { app } = p;
     const g = el('g', { class: `net is-${app.status}`, 'data-id': app.id }, nets);
-    const offsets = [-LANE, 0, LANE];
-    for (const o of offsets) {
-      const r = route(p, o);
-      el('path', { d: r.d, class: `trace${o === 0 ? '' : ' copper'}` }, g);
-      el('circle', { cx: r.via[0], cy: r.via[1], r: 3.5, class: 'via' }, g);
-      el('rect', { x: (p.side === 'right' ? r.end[0] - 10 : r.end[0]), y: r.end[1] - 3, width: 10, height: 6, class: 'pad' }, g);
-      if (o === 0 && app.status !== 'placeholder') {
-        const s = el('path', { d: r.d, class: 'signal', pathLength: 100 }, g);
-        s.style.animationDelay = `${-(placed.indexOf(p) * 0.9)}s`;
-      }
-    }
+    const r = route(p, 0);
+    el('path', { d: r.d, class: 'trace' }, g);
+    el('circle', { cx: r.via[0], cy: r.via[1], r: 2.75, class: 'via' }, g);
+    el('rect', { x: (p.side === 'right' ? r.end[0] - 8 : r.end[0]), y: r.end[1] - 2.5, width: 8, height: 5, class: 'pad' }, g);
     pins(g, p.x, p.y, CHIP.w, CHIP.h, 22, 8, 'tb');
     el('path', { d: chipPath(p.x, p.y, CHIP.w, CHIP.h), class: `chip-body${app.status === 'placeholder' ? ' is-placeholder' : ''}` }, g);
   }
@@ -218,14 +193,9 @@ function openSheet(id) {
   const chip = list.querySelector(`.chip[data-id="${CSS.escape(id)}"]`);
   lastTrigger = chip?.querySelector('button') || document.activeElement;
   renderSheet(app);
-  const show = () => { if (!sheet.open) sheet.showModal(); sheet.querySelector('h2').focus?.(); };
-  if (reduceMotion.matches || !chip || getComputedStyle(svg).display === 'none') return show();
-  // zoom the board toward the chip, then open the sheet
-  const b = board.getBoundingClientRect(), c = chip.getBoundingClientRect();
-  board.style.transformOrigin = `${((c.left + c.width / 2 - b.left) / b.width) * 100}% ${((c.top + c.height / 2 - b.top) / b.height) * 100}%`;
   setActive(id);
-  board.classList.add('is-zooming');
-  setTimeout(show, 260);
+  if (!sheet.open) sheet.showModal();
+  sheet.querySelector('h2').focus?.();
 }
 
 function closeSheet() {

@@ -1,0 +1,13 @@
+/*
+	X-Content-Type-Options: nosniff
+	Referrer-Policy: strict-origin-when-cross-origin
+	Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self'; style-src-attr 'unsafe-inline'; font-src 'self'; script-src 'self' 'sha256-+eUT3rAaFxB2dNJuOJFky9KAxOJTzoZEn+lBD9xp6i4='; base-uri 'none'; frame-ancestors 'none'
+
+/fonts/*
+	Cache-Control: public, max-age=31536000, immutable
+
+/assets/*
+	Cache-Control: public, max-age=31536000, immutable
+
+/apps.json
+	Cache-Control: public, max-age=300

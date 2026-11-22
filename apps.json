@@ -1,0 +1,42 @@
+{
+  "$schema": "./apps.schema.json",
+  "site": {
+    "owner": "Jose Alvarado",
+    "signature": "Made by bots. Orchestrated by Jose Alvarado.",
+    "location": "Orlando, FL",
+    "contactUrl": "",
+    "whosjoseUrl": "https://whosjose.com",
+    "crossingLabsUrl": "",
+    "githubUrl": "",
+    "xUrl": ""
+  },
+  "apps": [
+    {
+      "id": "pickthemenu",
+      "ref": "U2",
+      "name": "Pick the Menu",
+      "status": "live",
+      "version": "",
+      "primaryTech": "Next.js",
+      "platform": "Mobile web",
+      "tagline": "Five quick questions. One nearby restaurant, open now.",
+      "summary": "A mobile web app that settles \u201cwhere should we eat?\u201d Five quick questions return one nearby restaurant that\u2019s open now.",
+      "function": [
+        "A five-step quiz (vibe, cravings, hunger, distance, location) narrows nearby options to a single pick.",
+        "Group mode lets friends decide together.",
+        "Past picks are saved on the device."
+      ],
+      "approach": "Phone-first and account-free. Location is used only for the search, group links expire after a day, and email backup is optional.",
+      "stack": ["Next.js", "React", "Vercel", "Installable web app"],
+      "url": "https://pickthemenu.com",
+      "links": { "github": "", "demo": "", "video": "" },
+      "screenshots": [
+        { "src": "assets/pickthemenu-home.webp", "width": 540, "height": 1169, "caption": "FIG. 1 \u2014 HOME", "alt": "Pick the Menu home screen with the headline \u201cHungry? Let\u2019s pick the menu.\u201d and a Start the quiz button." },
+        { "src": "assets/pickthemenu-quiz.webp", "width": 540, "height": 1169, "caption": "FIG. 2 \u2014 QUIZ", "alt": "Pick the Menu quiz screen asking \u201cWhat\u2019s the vibe tonight?\u201d with four answer cards." }
+      ]
+    },
+    { "id": "app-02", "ref": "U3", "name": "App 02", "status": "placeholder" },
+    { "id": "app-03", "ref": "U4", "name": "App 03", "status": "placeholder" },
+    { "id": "app-04", "ref": "U5", "name": "App 04", "status": "placeholder" }
+  ]
+}
